@@ -30,7 +30,7 @@ class UserViewSet(djoser_views.UserViewSet):
                     'author__subscribers', user
                 ),
                 'author__recipes',
-            ).all()
+            ).order_by('id').all()
 
         elif self.action in ('subscribe',):
             return User.objects.prefetch_related(
