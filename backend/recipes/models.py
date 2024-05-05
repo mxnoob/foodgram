@@ -102,7 +102,7 @@ class RecipeIngredient(models.Model):
         return f'{self.ingredient} - {self.amount}'
 
     @classmethod
-    def get_shopping_ingredients(cls, user) -> list[dict]:
+    def get_shopping_ingredients(cls, user):
         """
         Получение списка ингредиентов для покупки
         :param user:
