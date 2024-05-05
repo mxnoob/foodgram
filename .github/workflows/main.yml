@@ -26,7 +26,9 @@ jobs:
           pip install -r ./backend/requirements.dev.txt
 
       - name: Test with flake8 and Django tests
+        env:
+          IS_TEST: True
         run: |
           cd backend/
-          pytest
           python -m flake8
+          pytest
