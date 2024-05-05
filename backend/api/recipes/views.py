@@ -60,12 +60,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if self.action in ['get_link', 'favorite', 'shopping_cart']:
-            return models.Recipe.objects.all()
-
-        elif self.action in ['list', 'retrieve']:
-            queryset = (
-                models.Recipe.objects.select_related('author')
+        qs = models.Recipe.objects
+        if self.action in ['list', 'retrieve']:
+            qs = (
+                qs.select_related('author')
                 .prefetch_related(
                     'recipe_ingredients__ingredient',
                     'recipe_ingredients',
@@ -88,12 +86,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 )
                 .all()
             )
-            return queryset
 
-        elif self.action in ['partial_update']:
-            return models.Recipe.objects.all()
-
-        return models.Recipe.objects.all()
+        return qs.order_by('id').all()
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

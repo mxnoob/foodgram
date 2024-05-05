@@ -22,7 +22,7 @@ class UserViewSet(djoser_views.UserViewSet):
         if self.action in ('list', 'retrieve'):
             return User.objects.prefetch_related(
                 Subscriber.get_prefetch_subscribers('subscribers', user),
-            ).all()
+            ).order_by('id').all()
 
         elif self.action in ('subscriptions',):
             return Subscriber.objects.prefetch_related(
