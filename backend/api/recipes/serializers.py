@@ -116,6 +116,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         ingredients = attrs.get('recipe_ingredients', [])
         if len(ingredients) == 0:
             raise serializers.ValidationError('Добавьте хотя бы 1 ингредиент.')
+
         id_ingredients = {ingredient['id'] for ingredient in ingredients}
         if len(ingredients) != len(id_ingredients):
             raise serializers.ValidationError(
@@ -200,7 +201,7 @@ class ShortRecipeSerializer(serializers.ModelSerializer):
 class AuthorRecipeSerializer(serializers.ModelSerializer):
     """Сериалайзер для наследования моделей вида Автор и Рецепт"""
 
-    _recipe_added_to = None
+    _recipe_added_to: str = None
 
     class Meta:
         model = None
