@@ -16,6 +16,11 @@ ALLOWED_HOSTS = (
     .split(',')
 )
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://foodgrm.hopto.org',
+    'http://foodgrm.hopto.org'
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
