@@ -33,7 +33,7 @@ services:
     container_name: foodgram-front
     image: mxnoob/foodgram_frontend
     volumes:
-      - staticfiles:/frontend_static
+      - staticfiles:/result_build
 
   nginx:
     container_name: foodgram-proxy
