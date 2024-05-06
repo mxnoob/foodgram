@@ -39,7 +39,7 @@ services:
     container_name: foodgram-proxy
     image: mxnoob/foodgram_nginx
     ports:
-      - "80:80"
+      - "8081:80"
     volumes:
       - staticfiles:/staticfiles/
       - mediafiles:/media/
