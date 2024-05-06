@@ -26,7 +26,7 @@ class UserViewSet(djoser_views.UserViewSet):
             ).order_by('id').all()
 
         elif self.action in ('subscriptions',):
-            return Subscriber.objects.prefetch_related(
+            return Subscriber.objects.exclude(author=user).prefetch_related(
                 Subscriber.get_prefetch_subscribers(
                     'author__subscribers', user
                 ),

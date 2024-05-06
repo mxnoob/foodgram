@@ -96,7 +96,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
         methods=['get'],
         detail=False,
         url_name='download',
-        permission_classes=[IsAuthenticated],
     )
     def download_shopping_cart(self, request):
         """Подготавливает и возвращает файл со списком покупок"""

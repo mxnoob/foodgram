@@ -75,7 +75,7 @@ class UserSerializer(serializers.ModelSerializer):
     def get_is_subscribed(self, obj):
         current_user = self.context.get('request').user
         if hasattr(obj, 'subs'):
-            return obj.subs and obj.subs[0].is_subscribed
+            return bool(obj.subs and obj.subs[0].is_subscribed)
         return (
             current_user.is_authenticated
             and current_user != obj

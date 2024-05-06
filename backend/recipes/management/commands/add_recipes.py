@@ -25,7 +25,7 @@ class Command(BaseCommand):
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        if not self.get_author:
+        if not self.get_author():
             self.stdout.write(self.style.ERROR('Doesn\'t exist any user.'))
             return
         try:
@@ -47,7 +47,7 @@ class Command(BaseCommand):
 
         with transaction.atomic():
             recipe = Recipe.objects.create(
-                author=self.get_author, image=self.fake_image, **recipe_data
+                author=self.get_author(), image=self.fake_image, **recipe_data
             )
 
             recipe.tags.set(
