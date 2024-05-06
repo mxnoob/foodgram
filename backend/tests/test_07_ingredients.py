@@ -5,6 +5,7 @@ from rest_framework.reverse import reverse_lazy
 
 from recipes.models import Ingredient
 
+
 INGREDIENTS_FIELDS = ('id', 'name', 'measurement_unit')
 
 

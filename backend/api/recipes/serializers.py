@@ -4,12 +4,12 @@ from rest_framework import serializers
 from api.fileds import Base64ImageField
 from api.users.serializers import UserSerializer
 from recipes.models import (
-    Tag,
+    FavoriteRecipe,
     Ingredient,
     Recipe,
     RecipeIngredient,
-    FavoriteRecipe,
     ShoppingCart,
+    Tag,
 )
 
 

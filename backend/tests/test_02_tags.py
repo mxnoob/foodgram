@@ -5,6 +5,7 @@ from rest_framework.reverse import reverse_lazy
 
 from recipes.models import Tag
 
+
 TAG_FIELDS = (
     'id',
     'name',

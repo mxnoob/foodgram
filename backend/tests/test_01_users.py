@@ -5,6 +5,7 @@ from rest_framework.reverse import reverse_lazy
 
 from .utils import check_pagination
 
+
 SHORT_USER_FIELDS = ('email', 'id', 'username', 'first_name', 'last_name')
 USER_FIELDS = (
     'email',

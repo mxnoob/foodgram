@@ -6,8 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from users.models import Subscriber
-from .serializers import AvatarSerializer, SubscribeSerializer
 from ..paginations import FoodgramPagination
+from .serializers import AvatarSerializer, SubscribeSerializer
+
 
 User = get_user_model()
 

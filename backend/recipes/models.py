@@ -4,6 +4,7 @@ from django_cleanup.cleanup import cleanup_select
 
 from core import abstract_models
 
+
 INGREDIENT_UNIT_MAX_LENGTH = 64
 
 MIN_COOKING_TIME = 1

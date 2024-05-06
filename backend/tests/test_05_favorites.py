@@ -2,7 +2,6 @@ from http import HTTPStatus
 
 import pytest
 from django.urls import reverse_lazy
-
 from tests.utils import check_author_recipe
 
 

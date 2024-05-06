@@ -2,11 +2,11 @@ import json
 from http import HTTPStatus
 
 import pytest
-from rest_framework.reverse import reverse_lazy, reverse
+from rest_framework.reverse import reverse, reverse_lazy
+from tests.utils import check_pagination, check_recipe_response
 
 from recipes.models import Recipe
 from shortener.models import LinkMapped
-from tests.utils import check_pagination, check_recipe_response
 
 
 @pytest.mark.usefixtures('recipes')

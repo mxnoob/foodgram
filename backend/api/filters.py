@@ -1,13 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.forms import BooleanField
-from django_filters import (
-    CharFilter,
-    ModelMultipleChoiceFilter,
-    Filter,
-)
+from django_filters import CharFilter, Filter, ModelMultipleChoiceFilter
 from django_filters.rest_framework import FilterSet
 
 from recipes.models import Ingredient, Recipe, Tag
+
 
 User = get_user_model()
 
@@ -46,7 +43,6 @@ class RecipeFilterSet(FilterSet):
     class Meta:
         model = Recipe
         fields = ('author', 'tags', 'is_favorited', 'is_in_shopping_cart')
-        ordering = ('id',)
 
     def is_favorite_filter(self, queryset, name, value):
         return self.filter_from_kwargs(queryset, value, name)

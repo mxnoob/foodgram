@@ -5,13 +5,14 @@ import pytest
 from django.contrib.auth.models import AnonymousUser
 
 from recipes.models import (
-    Tag,
+    FavoriteRecipe,
     Ingredient,
     Recipe,
     RecipeIngredient,
-    FavoriteRecipe,
     ShoppingCart,
+    Tag,
 )
+
 
 TAGS_COUNT = 3
 

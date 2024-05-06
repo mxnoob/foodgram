@@ -1,8 +1,6 @@
 import pytest
-
 from django.urls import reverse_lazy
 from rest_framework import status
-
 from tests.utils import check_author_recipe
 
 

@@ -3,6 +3,7 @@ from random import choice, randint
 
 from django.db import models
 
+
 MIN_HASH_GEN = 8
 MAX_HASH_GEN = 10
 MAX_HASH_LENGTH = 15

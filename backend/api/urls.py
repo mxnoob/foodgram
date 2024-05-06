@@ -1,6 +1,7 @@
-from django.urls import path, include
+from django.urls import include, path
 
 from .users.urls import user_router
+
 
 app_name = 'api'
 
