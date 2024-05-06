@@ -123,18 +123,6 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                 'Ингредиенты должны быть уникальными.'
             )
 
-        # if any(
-        #     filter(
-        #         lambda ingredient: not Ingredient.objects.filter(
-        #             id=ingredient['id']
-        #         ).exists(),
-        #         ingredients,
-        #     )
-        # ):
-        #     raise serializers.ValidationError(
-        #         'Попытка добавить в рецепт несуществующие ингредиенты.'
-        #     )
-
         for ingredient in ingredients:
             amount = ingredient['amount']
             if (
