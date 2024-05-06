@@ -69,4 +69,4 @@ class TestIngredient:
             )
         )
 
-        assert response.status_code == HTTPStatus.OK
+        assert response.status_code == HTTPStatus.NOT_FOUND
