@@ -32,8 +32,9 @@ services:
   frontend:
     container_name: foodgram-front
     image: mxnoob/foodgram_frontend
+    command: cp -r /app/build/. /frontend_static/
     volumes:
-      - staticfiles:/result_build
+      - staticfiles:/frontend_static
 
   nginx:
     container_name: foodgram-proxy
