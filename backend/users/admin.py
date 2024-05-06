@@ -12,6 +12,14 @@ class UserAdmin(admin.ModelAdmin):
     search_help_text = 'Поиск по `username` и `email`'
     list_display_links = ('id', 'username', 'email', 'full_name')
 
+    def save_model(self, request, obj, form, change):
+        """
+        Хэширование и сохранение пароля.
+        """
+        if 'password' in form.changed_data and obj.password:
+            obj.set_password(form.cleaned_data['password'])
+        super().save_model(request, obj, form, change)
+
     @admin.display(description='Имя фамилия')
     def full_name(self, obj):
         """Получение полного имени"""
