@@ -19,9 +19,8 @@ class ShortenerSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        original_url = validated_data.get('original_url')
         try:
-            return LinkMapped.objects.get(original_url=original_url)
+            return LinkMapped.objects.get(**validated_data)
         except LinkMapped.DoesNotExist:
             return super().create(validated_data)
 
