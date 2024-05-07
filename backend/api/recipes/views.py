@@ -85,7 +85,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 .all()
             )
 
-        return qs.order_by('id').all()
+        return qs.order_by('-created_at').all()
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

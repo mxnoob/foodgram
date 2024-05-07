@@ -70,6 +70,7 @@ class Recipe(abstract_models.AuthorCreatedModel):
     )
 
     class Meta:
+        ordering = ('-created_at',)
         default_related_name = 'recipes'
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
