@@ -59,7 +59,7 @@ class PDF(FPDF):
         self.set_y(-15)
         self.set_text_color(128)
         text_link = link.split('://, 1')[-1]
-        self.cell(0, 10, text_link, align='R', link=link)
+        self.cell(0, 10, link, align='R', link=text_link)
 
     def get_pdf(self, html_text=None):
         if self.page == 0:

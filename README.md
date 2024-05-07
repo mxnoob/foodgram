@@ -1,4 +1,8 @@
-Находясь в папке infra, выполните команду docker-compose up. При выполнении этой команды контейнер frontend, описанный в docker-compose.yml, подготовит файлы, необходимые для работы фронтенд-приложения, а затем прекратит свою работу.
+<p align="center">
+    <img src="backend/data/logo.png" width="150">
+</p>
 
-По адресу http://localhost изучите фронтенд веб-приложения, а по адресу http://localhost/api/docs/ — спецификацию API.
-
+<p align="center">
+    <a href="https://github.com/mxnoob/foodgram/actions/workflows/main.yml" alt="Github actions">
+        <img src="https://github.com/mxnoob/foodgram/actions/workflows/main.yml/badge.svg" /></a>
+</p>
