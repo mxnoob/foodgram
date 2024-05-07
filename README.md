@@ -36,3 +36,31 @@
         <img alt="docker" src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white">
     </a>
 </p>
+
+
+<h2 align="center">Описание</h2>
+
+<p>
+    Foodgram - приложение, с помощью которого, пользователи могут создавать рецепты, добавлять в избраное, создавать список покупок и подписываться на авторов рецептов.</p>
+    <p>В списке покупок можно скачать `.pdf` файл, который включает в себя список ингредиентов и названия рецептов.
+</p>
+
+<h2 align="center">Запуск</h2>
+
+```shell
+# Склонировать репозиторий
+git clone git@github.com:mxnoob/foodgram.git
+```
+
+> [!IMPORTANT]
+> Необходимо создать файл `.env` с переменными окружения в папке `infra`.</br>
+> Пример файла [infra/.env.example](https://github.com/mxnoob/foodgram/blob/6144c03a787cb75549b26c2059937192cce50b0a/infra/.env.example#L1-L13)
+
+
+```shell
+# Запустить докер композ
+docker compose -f infra/docker-local.yml up -d --build
+```
+
+### Автор:
+[mxnoob](https://www.github.com/mxnoob)
