@@ -144,7 +144,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_link(self, request, pk=None):
         """Получение короткой ссылки на рецепт"""
         self.get_object()
-        original_url = request.build_absolute_uri(f'/recipes/{pk}/')
+        original_url = request.META.get('HTTP_REFERER')
         serializer = self.get_serializer(
             data={'original_url': original_url}, context={'request': request}
         )
