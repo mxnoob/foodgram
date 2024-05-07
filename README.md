@@ -13,8 +13,8 @@
     </a>
 </p>
 
-## Стек технологий
 
+<h2 align="center">Стек технологий</h2>
 
 <p align="center">
     <a href="https://www.djangoproject.com/">
