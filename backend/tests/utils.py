@@ -3,7 +3,9 @@ from http import HTTPStatus
 
 def check_pagination(json_response):
     for field in ('count', 'next', 'previous', 'results'):
-        assert field in json_response, f'Response does not contain field {field!r}'
+        assert (
+            field in json_response
+        ), f'Response does not contain field {field!r}'
 
 
 def check_recipe_response(result):
