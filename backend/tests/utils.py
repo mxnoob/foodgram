@@ -54,12 +54,13 @@ def check_recipe_response(result):
 
 def check_author_recipe(current_client, expected_status, url_func):
     url = url_func(1)
-    last_recipe_id = Recipe.objects.last().id
+    last_recipe_id = 664721
     response = current_client.post(url_func(last_recipe_id + 1))
     assert response.status_code in (
         HTTPStatus.BAD_REQUEST,
         HTTPStatus.UNAUTHORIZED,
-    )
+    ), response.json()
+
     response = current_client.post(url)
     assert response.status_code == expected_status
 

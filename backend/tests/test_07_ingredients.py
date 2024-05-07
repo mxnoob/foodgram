@@ -62,10 +62,10 @@ class TestIngredient:
         ), 'All ingredients should start with "A"'
 
     def test_07_get_bad_ingredients(self, client):
-        last_ingredient_id = Ingredient.objects.last().id
+        ingredient_id = 66464642
         response = client.get(
             reverse_lazy(
-                'api:ingredient-detail', args=[last_ingredient_id + 1]
+                'api:ingredient-detail', args=[ingredient_id]
             )
         )
 

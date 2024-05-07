@@ -251,7 +251,7 @@ class TestRecipes:
         assert Recipe.objects.count() == recipes_count
 
     def test_03_get_short_link(self, client):
-        recipe_id = Recipe.objects.last().id + 1
+        recipe_id = 6361266
         response = client.get(self.get_short_link(recipe_id))
         assert response.status_code == HTTPStatus.NOT_FOUND, response.json()
 
@@ -268,9 +268,9 @@ class TestRecipes:
         assert len(response.json()) == 1
 
         short_link = response.json()['short-link']
-        response = client.get(short_link, follow_redirects=True)
+        response = client.get(short_link)
 
-        assert response.status_code == HTTPStatus.FOUND
+        assert response.status_code == HTTPStatus.FOUND, response.json()
 
         assert '/api/' + response.url.split('/api/', 1)[-1], reverse(
             'api:recipe-detail', args=[recipe_id]
