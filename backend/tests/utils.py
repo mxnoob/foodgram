@@ -1,7 +1,5 @@
 from http import HTTPStatus
 
-from recipes.models import Recipe
-
 
 def check_pagination(json_response):
     for field in ('count', 'next', 'previous', 'results'):
@@ -23,7 +21,7 @@ def check_recipe_response(result):
     )
     for field in fields:
         assert field in result, f'Missing field {field}'
-    assert isinstance(result['tags'], list), f'Tags should be a list'
+    assert isinstance(result['tags'], list), 'Tags should be a list'
 
     result_tags = result['tags'][0]
     fields = ('id', 'slug', 'name')
@@ -31,7 +29,7 @@ def check_recipe_response(result):
         assert field in result_tags, f'Missing field {field}'
 
     result_author = result['author']
-    assert isinstance(result_author, dict), f'Author should be a dict'
+    assert isinstance(result_author, dict), 'Author should be a dict'
     fields = (
         'email',
         'id',
@@ -45,7 +43,7 @@ def check_recipe_response(result):
         assert field in result_author, f'Missing field {field}'
     assert isinstance(
         result['ingredients'], list
-    ), f'Ingredients should be a list'
+    ), 'Ingredients should be a list'
     result_ingredients = result['ingredients'][0]
     fields = ('id', 'name', 'measurement_unit', 'amount')
     for field in fields:
@@ -76,7 +74,7 @@ def check_author_recipe(current_client, expected_status, url_func):
 
         for field in fields:
             assert (
-                    field in json_response
+                field in json_response
             ), f'Field {field} not found in response'
 
     response = current_client.delete(url)

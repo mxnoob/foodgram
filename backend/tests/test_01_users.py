@@ -1,3 +1,4 @@
+# flake8: noqa: E501
 from http import HTTPStatus
 
 import pytest
@@ -117,7 +118,6 @@ class Test01Users:
 
         last_user = django_user_model.objects.last()
         assert last_user.check_password(data['password'])
-
 
     @pytest.mark.parametrize(
         'current_client',

@@ -1,9 +1,8 @@
+# flake8: noqa: E501
 from http import HTTPStatus
 
 import pytest
 from rest_framework.reverse import reverse_lazy
-
-from recipes.models import Ingredient
 
 
 INGREDIENTS_FIELDS = ('id', 'name', 'measurement_unit')
@@ -64,9 +63,7 @@ class TestIngredient:
     def test_07_get_bad_ingredients(self, client):
         ingredient_id = 66464642
         response = client.get(
-            reverse_lazy(
-                'api:ingredient-detail', args=[ingredient_id]
-            )
+            reverse_lazy('api:ingredient-detail', args=[ingredient_id])
         )
 
         assert response.status_code == HTTPStatus.NOT_FOUND
