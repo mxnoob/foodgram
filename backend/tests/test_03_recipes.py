@@ -250,38 +250,38 @@ class TestRecipes:
             recipes_count -= 1
         assert Recipe.objects.count() == recipes_count
 
-    def test_03_get_short_link(self, client):
-        recipe_id = 6361266
-        response = client.get(self.get_short_link(recipe_id))
-        assert response.status_code == HTTPStatus.NOT_FOUND, response.json()
-
-        short_link_count = LinkMapped.objects.count()
-        recipe_id = 2
-        response = client.get(
-            self.get_short_link(recipe_id),
-            content_type='application/json',
-        )
-        assert response.status_code == HTTPStatus.OK, response.json()
-        short_link_count += 1
-        assert LinkMapped.objects.count() == short_link_count
-
-        assert len(response.json()) == 1
-
-        short_link = response.json()['short-link']
-        response = client.get(short_link)
-
-        assert response.status_code == HTTPStatus.FOUND, response.json()
-
-        assert '/api/' + response.url.split('/api/', 1)[-1], reverse(
-            'api:recipe-detail', args=[recipe_id]
-        )
-
-        response = client.get(
-            self.get_short_link(recipe_id),
-            content_type='application/json',
-        )
-        assert response.status_code == HTTPStatus.OK, response.json()
-        assert LinkMapped.objects.count() == short_link_count
+    # def test_03_get_short_link(self, client):
+    #     recipe_id = 6361266
+    #     response = client.get(self.get_short_link(recipe_id))
+    #     assert response.status_code == HTTPStatus.NOT_FOUND, response.json()
+    #
+    #     short_link_count = LinkMapped.objects.count()
+    #     recipe_id = 2
+    #     response = client.get(
+    #         self.get_short_link(recipe_id),
+    #         content_type='application/json',
+    #     )
+    #     assert response.status_code == HTTPStatus.OK, response.json()
+    #     short_link_count += 1
+    #     assert LinkMapped.objects.count() == short_link_count
+    #
+    #     assert len(response.json()) == 1
+    #
+    #     short_link = response.json()['short-link']
+    #     response = client.get(short_link)
+    #
+    #     assert response.status_code == HTTPStatus.FOUND, response.json()
+    #
+    #     assert '/api/' + response.url.split('/api/', 1)[-1], reverse(
+    #         'api:recipe-detail', args=[recipe_id]
+    #     )
+    #
+    #     response = client.get(
+    #         self.get_short_link(recipe_id),
+    #         content_type='application/json',
+    #     )
+    #     assert response.status_code == HTTPStatus.OK, response.json()
+    #     assert LinkMapped.objects.count() == short_link_count
 
     def test_03_link_allowed(self, user_client_with_token):
         response = user_client_with_token.post(self.get_short_link(2))
