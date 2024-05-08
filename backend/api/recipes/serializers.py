@@ -107,7 +107,9 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
     def validate_image(self, image_data):
         if image_data is None:
-            raise serializers.ValidationError('У рецепта обязательно должно быть изображение.')
+            raise serializers.ValidationError(
+                'У рецепта обязательно должно быть изображение.'
+            )
         return image_data
 
     def validate(self, attrs):
