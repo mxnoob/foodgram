@@ -18,11 +18,6 @@ class UserViewSet(djoser_views.UserViewSet):
 
     pagination_class = FoodgramPagination
 
-    def get_permissions(self):
-        if self.action == 'me':
-            return [IsAuthenticated()]
-        return super().get_permissions()
-
     def get_queryset(self):
         user = self.request.user
         if self.action in ('list', 'retrieve'):
