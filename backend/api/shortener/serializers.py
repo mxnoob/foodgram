@@ -19,7 +19,8 @@ class ShortenerSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        return LinkMapped.objects.get_or_create(**validated_data)
+        instance, _ = LinkMapped.objects.get_or_create(**validated_data)
+        return instance
 
     def to_representation(self, instance):
         return {'short-link': self.get_short_link(instance)}
