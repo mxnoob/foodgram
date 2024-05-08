@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from django_cleanup.cleanup import cleanup_select
 
 from core import abstract_models
@@ -10,12 +11,14 @@ class User(AbstractUser):
     """Модель пользователя"""
 
     email = models.EmailField(unique=True)
+    first_name = models.CharField(_("first name"), max_length=150)
+    last_name = models.CharField(_("last name"), max_length=150)
     avatar = models.ImageField(
         'Аватар', upload_to='avatars/', blank=True, null=True
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
 
 class Subscriber(abstract_models.AuthorModel):

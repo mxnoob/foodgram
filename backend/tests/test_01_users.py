@@ -80,11 +80,11 @@ class Test01Users:
         'current_client',
         (pytest.lazy_fixture('admin_client'), pytest.lazy_fixture('client')),
     )
-    def test_01_create_user(self, current_client, django_user_model):
+    def test_01_create_user(self, current_client, django_user_model, password):
         bad_data = {
             'email': 'vpupkin@yandex.ru',
             'username': 'vasya.pupkin',
-            'password': 'Qwerty123',
+            'password': password,
         }
 
         response = current_client.post(self.URL_USERS, data=bad_data)
@@ -95,12 +95,12 @@ class Test01Users:
             'username': 'vasya.pupkin',
             'first_name': 'Вася',
             'last_name': 'Иванов',
-            'password': 'Qwerty123',
+            'password': password,
         }
         users_count = django_user_model.objects.count()
 
         response = current_client.post(self.URL_USERS, data=data)
-        assert response.status_code == HTTPStatus.CREATED
+        assert response.status_code == HTTPStatus.CREATED, response.json()
 
         users_count += 1
         assert django_user_model.objects.count() == users_count
@@ -248,11 +248,11 @@ class Test01Users:
         ),
     )
     def test_01_change_password(
-        self, current_client, current_user, expected_status
+        self, current_client, current_user, expected_status, password
     ):
         data = {
             'new_password': 'new_password',
-            'current_password': 'password',
+            'current_password': password,
         }
         response = current_client.post(self.URL_CHANGE_PASSWORD, data=data)
 
@@ -271,8 +271,8 @@ class Test01Users:
             ),
         ),
     )
-    def test_01_get_token(self, current_client, current_user):
-        data = {'password': 'password', 'email': current_user.email}
+    def test_01_get_token(self, current_client, current_user, password):
+        data = {'password': password, 'email': current_user.email}
 
         response = current_client.post(self.URL_GET_TOKEN, data=data)
 

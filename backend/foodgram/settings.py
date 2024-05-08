@@ -149,7 +149,6 @@ DJOSER = {
     'SERIALIZERS': {
         'user': 'api.users.serializers.UserSerializer',
         'current_user': 'api.users.serializers.UserSerializer',
-        'user_create': 'api.users.serializers.UserCreateSerializer',
     },
     'PERMISSIONS': {
         'user_list': ('rest_framework.permissions.AllowAny',),

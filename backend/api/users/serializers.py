@@ -11,50 +11,6 @@ RECIPE_LIMIT = 3
 User = get_user_model()
 
 
-class ShortUserSerializer(serializers.ModelSerializer):
-    """Сериализатор сокращенных полей пользователя"""
-
-    class Meta:
-        model = User
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-        )
-
-
-class UserCreateSerializer(serializers.ModelSerializer):
-    """Сериализатор создания пользователя"""
-
-    class Meta:
-        model = User
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'password',
-        )
-        extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True},
-        }
-        write_only_fields = ('password',)
-
-    def create(self, validated_data):
-        password = validated_data.pop('password')
-        user = User(**validated_data)
-        user.set_password(password)
-        user.save()
-        return user
-
-    def to_representation(self, instance):
-        return ShortUserSerializer(instance).data
-
-
 class UserSerializer(serializers.ModelSerializer):
     """Сериализатор пользователя"""
 
@@ -132,11 +88,11 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     user = serializers.SlugRelatedField(
         read_only=True,
-        slug_field='username',
+        slug_field='email',
         default=serializers.CurrentUserDefault(),
     )
     author = serializers.SlugRelatedField(
-        slug_field='username',
+        slug_field='email',
         queryset=User.objects.all(),
     )
 

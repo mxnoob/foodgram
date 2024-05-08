@@ -19,11 +19,16 @@ TAGS_COUNT = 3
 
 
 @pytest.fixture
-def admin_user(django_user_model):
+def password():
+    return 'Qwwte7435ge!erty123'
+
+
+@pytest.fixture
+def admin_user(django_user_model, password):
     user_data = {
         'email': 'admin@example.com',
         'username': 'admin',
-        'password': 'password',
+        'password': password,
         'first_name': 'admin',
         'last_name': 'admin',
         'avatar': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==',
@@ -32,11 +37,11 @@ def admin_user(django_user_model):
 
 
 @pytest.fixture
-def user(django_user_model):
+def user(django_user_model, password):
     user_data = {
         'email': 'user@example.com',
         'username': 'default_user',
-        'password': 'password',
+        'password': password,
         'first_name': 'user',
         'last_name': 'user',
     }
@@ -49,13 +54,13 @@ def anonymous_user():
 
 
 @pytest.fixture
-def create_users(django_user_model):
+def create_users(django_user_model, password):
     django_user_model.objects.bulk_create(
         django_user_model(
             **{
                 'email': f'user{i}@example.com',
                 'username': f'default_user{i}',
-                'password': 'password',
+                'password': password,
                 'first_name': f'user{i}',
                 'last_name': f'user{i}',
             }

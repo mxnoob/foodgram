@@ -40,6 +40,7 @@ class TestSubscribers:
 
         json_response = response.json()
         check_pagination(json_response)
+        assert len(json_response['results']) > 0, json_response
         json_recipes = json_response['results'][0]['recipes']
         assert len(json_recipes) == recipes_limit
 
