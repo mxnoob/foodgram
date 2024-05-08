@@ -1,7 +1,7 @@
 from django.db import transaction
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
-from api.fileds import Base64ImageField
 from api.users.serializers import UserSerializer
 from recipes.models import (
     FavoriteRecipe,
@@ -104,6 +104,11 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             'text',
             'cooking_time',
         )
+
+    def validate_image(self, image_data):
+        if image_data is None:
+            raise serializers.ValidationError('У рецепта обязательно должно быть изображение.')
+        return image_data
 
     def validate(self, attrs):
         tags = attrs.get('tags', [])
