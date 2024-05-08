@@ -6,8 +6,6 @@ from rest_framework.validators import UniqueTogetherValidator
 from users.models import Subscriber
 
 
-RECIPE_LIMIT = 3
-
 User = get_user_model()
 
 
@@ -42,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
 class AvatarSerializer(serializers.ModelSerializer):
     """Сериализатор аватарки"""
 
-    avatar = Base64ImageField(allow_null=True, required=True)
+    avatar = Base64ImageField(allow_null=True)
 
     class Meta:
         model = User
@@ -75,12 +73,14 @@ class UserRecipeSerializer(UserSerializer):
         from api.recipes.serializers import ShortRecipeSerializer
 
         request = self.context.get('request')
-        recipes_limit = int(
-            request.query_params.get('recipes_limit', RECIPE_LIMIT)
-        )
-        return ShortRecipeSerializer(
-            obj.recipes.all()[:recipes_limit], many=True
-        ).data
+        recipes = obj.recipes.all()
+        try:
+            recipes_limit = int(request.query_params.get('recipes_limit'))
+            recipes = recipes[:recipes_limit]
+        except (ValueError, TypeError):
+            pass
+
+        return ShortRecipeSerializer(recipes, many=True).data
 
 
 class SubscribeSerializer(serializers.ModelSerializer):

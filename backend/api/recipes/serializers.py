@@ -76,7 +76,9 @@ class RecipeSerializer(serializers.ModelSerializer):
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     """Сериалайзер короткого представления ингредиента для рецепта"""
 
-    id = serializers.IntegerField()
+    id = serializers.PrimaryKeyRelatedField(
+        queryset=Ingredient.objects.all(), source='ingredient'
+    )
 
     class Meta:
         model = RecipeIngredient
@@ -124,22 +126,13 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         if len(ingredients) == 0:
             raise serializers.ValidationError('Добавьте хотя бы 1 ингредиент.')
 
-        id_ingredients = {ingredient['id'] for ingredient in ingredients}
+        id_ingredients = {
+            ingredient['ingredient'] for ingredient in ingredients
+        }
         if len(ingredients) != len(id_ingredients):
             raise serializers.ValidationError(
                 'Ингредиенты должны быть уникальными.'
             )
-
-        for ingredient in ingredients:
-            amount = ingredient['amount']
-            if (
-                isinstance(amount, str)
-                and amount.isdigit()
-                and int(amount) <= 0
-            ) or amount <= 0:
-                raise serializers.ValidationError(
-                    'Количество ингредиентов должно быть больше 0.'
-                )
 
         return attrs
 
@@ -147,7 +140,9 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         tags = validated_data.pop('tags')
         ingredients = validated_data.pop('recipe_ingredients')
         with transaction.atomic():
-            recipe = Recipe.objects.create(**validated_data)
+            recipe = Recipe.objects.create(
+                author=self.context['request'].user, **validated_data
+            )
             self.add_tags_and_ingredients_to_recipe(recipe, tags, ingredients)
             return recipe
 
@@ -155,27 +150,22 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         tags = validated_data.pop('tags')
         ingredients = validated_data.pop('recipe_ingredients')
         with transaction.atomic():
+            instance.ingredients.clear()
+            instance.tags.clear()
             self.add_tags_and_ingredients_to_recipe(
-                instance, tags, ingredients, True
+                instance, tags, ingredients
             )
             super().update(instance, validated_data)
-            instance.save()
             return instance
 
     @staticmethod
-    def add_tags_and_ingredients_to_recipe(
-        recipe, tags, ingredients, updated=False
-    ):
+    def add_tags_and_ingredients_to_recipe(recipe, tags, ingredients):
         """Добавление или обновление Тегов и Ингредиентов"""
-        if updated:
-            recipe.ingredients.clear()
-            recipe.tags.clear()
-
         recipe.tags.set(tags)
         RecipeIngredient.objects.bulk_create(
             RecipeIngredient(
                 recipe=recipe,
-                ingredient_id=ingredient['id'],
+                ingredient=ingredient['ingredient'],
                 amount=ingredient['amount'],
             )
             for ingredient in ingredients
@@ -200,7 +190,7 @@ class AuthorRecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = None
-        fields = '__all__'
+        fields = ('author', 'recipe')
         read_only_fields = ('author',)
 
     def validate(self, attrs):

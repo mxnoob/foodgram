@@ -79,13 +79,13 @@ def check_author_recipe(current_client, expected_status, url_func):
                 field in json_response
             ), f'Field {field} not found in response'
 
-    response = current_client.delete(url)
+    response = current_client.delete(url, content_type='application/json')
     assert response.status_code in (
         HTTPStatus.NO_CONTENT,
         HTTPStatus.UNAUTHORIZED,
-    )
-    response = current_client.delete(url)
+    ), response
+    response = current_client.delete(url, content_type='application/json')
     assert response.status_code in (
         HTTPStatus.BAD_REQUEST,
         HTTPStatus.UNAUTHORIZED,
-    )
+    ), response

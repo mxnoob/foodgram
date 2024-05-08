@@ -189,7 +189,7 @@ class Test01Users:
     ):
         bad_data = {}
         response = current_client.put(self.URL_ME_AVATAR, data=bad_data)
-        assert response.status_code == bad_status
+        assert response.status_code == bad_status, response.json()
 
         data = {
             'avatar': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg=='

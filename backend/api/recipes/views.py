@@ -87,9 +87,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return qs.order_by('-created_at').all()
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
     @action(
         methods=['get'],
         detail=False,
@@ -112,28 +109,32 @@ class RecipeViewSet(viewsets.ModelViewSet):
             filename='foodgram_shopping_list.pdf',
         )
 
-    @action(methods=['post', 'delete'], detail=True, url_name='shopping-cart')
+    @action(
+        methods=['post'],
+        detail=True,
+        url_name='shopping-cart',
+    )
     def shopping_cart(self, request, pk=None):
-        """
-        Добавление рецепта в список покупок.
-        Удаление рецепта из списка покупок.
-        """
-        return self._post_delete_author_recipe(
-            request, pk, models.ShoppingCart
-        )
+        """Добавление рецепта в список покупок."""
+        return self._post_author_recipe(request, pk)
+
+    @shopping_cart.mapping.delete
+    def delete_shopping_cart(self, request, pk=None):
+        """Удаление рецепта из списка покупок."""
+        return self._delete_author_recipe(request, pk, models.ShoppingCart)
 
     @action(
-        methods=['post', 'delete'],
+        methods=['post'],
         detail=True,
     )
     def favorite(self, request, pk=None):
-        """
-        Добавление рецепта в избранное.
-        Удаление рецепта из избранного.
-        """
-        return self._post_delete_author_recipe(
-            request, pk, models.FavoriteRecipe
-        )
+        """Добавление рецепта в избранное."""
+        return self._post_author_recipe(request, pk)
+
+    @favorite.mapping.delete
+    def delete_favorite(self, request, pk=None):
+        """Удаление рецепта из избранного."""
+        return self._delete_author_recipe(request, pk, models.FavoriteRecipe)
 
     @action(
         methods=['get'],
@@ -146,35 +147,30 @@ class RecipeViewSet(viewsets.ModelViewSet):
         self.get_object()
         original_url = request.META.get('HTTP_REFERER')
         serializer = self.get_serializer(
-            data={'original_url': original_url}, context={'request': request}
+            data={'original_url': original_url},
+            context={'request': request},
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def _post_delete_author_recipe(self, request, pk, model):
+    def _post_author_recipe(self, request, pk):
+        """Добавление рецепта с автором"""
+        serializer = self.get_serializer(data=dict(recipe=pk))
+        serializer.is_valid(raise_exception=True)
+        serializer.save(author=self.request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def _delete_author_recipe(self, request, pk, model):
         """Добавление или удаление рецепта с автором"""
-        if request.method == 'POST':
-            if not models.Recipe.objects.filter(pk=pk).exists():
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+        recipe = get_object_or_404(models.Recipe, pk=pk)
+        obj_count, _ = model.objects.filter(
+            author=self.request.user,
+            recipe=recipe,
+        ).delete()
 
-            serializer = self.get_serializer(data=dict(recipe=pk))
-            serializer.is_valid(raise_exception=True)
-            serializer.save(author=self.request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if obj_count == 0:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        elif request.method == 'DELETE':
-            recipe = get_object_or_404(models.Recipe, pk=pk)
-            if not model.objects.filter(
-                author=self.request.user, recipe=recipe
-            ).exists():
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-
-            instance = model.objects.get(
-                author=self.request.user, recipe=recipe
-            )
-            instance.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response(status=status.HTTP_204_NO_CONTENT)

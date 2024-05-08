@@ -18,20 +18,34 @@ class UserViewSet(djoser_views.UserViewSet):
 
     pagination_class = FoodgramPagination
 
+    def get_permissions(self):
+        if self.action == 'me':
+            return [IsAuthenticated()]
+        return super().get_permissions()
+
     def get_queryset(self):
         user = self.request.user
         if self.action in ('list', 'retrieve'):
-            return User.objects.prefetch_related(
-                Subscriber.get_prefetch_subscribers('subscribers', user),
-            ).order_by('id').all()
+            return (
+                User.objects.prefetch_related(
+                    Subscriber.get_prefetch_subscribers('subscribers', user),
+                )
+                .order_by('id')
+                .all()
+            )
 
         elif self.action in ('subscriptions',):
-            return Subscriber.objects.exclude(author=user).prefetch_related(
-                Subscriber.get_prefetch_subscribers(
-                    'author__subscribers', user
-                ),
-                'author__recipes',
-            ).order_by('id').all()
+            return (
+                Subscriber.objects.exclude(author=user)
+                .prefetch_related(
+                    Subscriber.get_prefetch_subscribers(
+                        'author__subscribers', user
+                    ),
+                    'author__recipes',
+                )
+                .order_by('id')
+                .all()
+            )
 
         elif self.action in ('subscribe',):
             return User.objects.prefetch_related(
@@ -51,7 +65,7 @@ class UserViewSet(djoser_views.UserViewSet):
         return super().me(request, *args, **kwargs)
 
     @action(
-        methods=['put', 'delete'],
+        methods=['put'],
         detail=False,
         permission_classes=[IsAuthenticated],
         url_path='me/avatar',
@@ -59,23 +73,16 @@ class UserViewSet(djoser_views.UserViewSet):
     )
     def avatar(self, request):
         """Добавление или удаление аватара"""
-        data = request.data
-        status_code = status.HTTP_200_OK
-        is_post = True
-        if request.method == 'DELETE':
-            if 'avatar' not in data:
-                data = {'avatar': None}
-            status_code = status.HTTP_204_NO_CONTENT
-            is_post = False
+        serializer = self._change_avatar(request.data)
+        return Response(serializer.data)
 
-        instance = self.get_instance()
-        serializer = AvatarSerializer(instance, data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(
-            serializer.data if is_post else None,
-            status=status_code,
-        )
+    @avatar.mapping.delete
+    def delete_avatar(self, request):
+        data = request.data
+        if 'avatar' not in data:
+            data = {'avatar': None}
+        self._change_avatar(data)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         methods=['get'],
@@ -93,7 +100,7 @@ class UserViewSet(djoser_views.UserViewSet):
         return self.get_paginated_response(serializer.data)
 
     @action(
-        methods=['post', 'delete'],
+        methods=['post'],
         detail=True,
         permission_classes=[IsAuthenticated],
         url_path='subscribe',
@@ -101,19 +108,27 @@ class UserViewSet(djoser_views.UserViewSet):
     )
     def subscribe(self, request, id):
         """Подписка или отписка пользователя"""
-        if request.method == 'POST':
-            author = self.get_queryset().filter(id=id).first()
-            serializer = SubscribeSerializer(
-                data={'author': author}, context={'request': request}
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = SubscribeSerializer(
+            data={'author': self.get_object()},
+            context={'request': request},
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        qs = Subscriber.objects.filter(author_id=id, user=request.user)
-        if not qs.exists():
+    @subscribe.mapping.delete
+    def unsubscribe(self, request, id):
+        subscriber_deleted, _ = Subscriber.objects.filter(
+            author_id=id, user=request.user
+        ).delete()
+
+        if subscriber_deleted == 0:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        instance = qs.first()
-        instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def _change_avatar(self, data):
+        instance = self.get_instance()
+        serializer = AvatarSerializer(instance, data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return serializer

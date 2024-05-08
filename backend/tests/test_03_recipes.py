@@ -92,6 +92,38 @@ class TestRecipes:
 
         assert response.status_code == HTTPStatus.BAD_REQUEST, response.json()
 
+        bad_data = {
+            'ingredients': [{'id': 1, 'amount': 1}, {'id': 1, 'amount': 5}],
+            'tags': [1, 2, 3],
+            'image': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==',
+            'name': 'new_ingredient',
+            'text': 'new_text',
+            'cooking_time': 4,
+        }
+        response = user_client_with_token.post(
+            self.URL_RECIPIES,
+            data=json.dumps(bad_data),
+            content_type='application/json',
+        )
+
+        assert response.status_code == HTTPStatus.BAD_REQUEST, response.json()
+
+        bad_data = {
+            'ingredients': [],
+            'tags': [1, 2, 3],
+            'image': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==',
+            'name': 'new_ingredient',
+            'text': 'new_text',
+            'cooking_time': 4,
+        }
+        response = user_client_with_token.post(
+            self.URL_RECIPIES,
+            data=json.dumps(bad_data),
+            content_type='application/json',
+        )
+
+        assert response.status_code == HTTPStatus.BAD_REQUEST, response.json()
+
     @pytest.mark.parametrize(
         'current_client',
         (

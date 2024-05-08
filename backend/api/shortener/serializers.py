@@ -19,10 +19,7 @@ class ShortenerSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        try:
-            return LinkMapped.objects.get(**validated_data)
-        except LinkMapped.DoesNotExist:
-            return super().create(validated_data)
+        return LinkMapped.objects.get_or_create(**validated_data)
 
     def to_representation(self, instance):
         return {'short-link': self.get_short_link(instance)}
