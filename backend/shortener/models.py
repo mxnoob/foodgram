@@ -3,11 +3,12 @@ from random import choice, randint
 
 from django.db import models
 
-
-MIN_HASH_GEN = 8
-MAX_HASH_GEN = 10
-MAX_HASH_LENGTH = 15
-URL_MAX_LENGTH = 256
+from core.constants import (
+    MAX_HASH_GEN,
+    MAX_HASH_LENGTH,
+    MIN_HASH_GEN,
+    URL_MAX_LENGTH,
+)
 
 
 def generate_hash() -> str:

@@ -1,17 +1,17 @@
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django_cleanup.cleanup import cleanup_select
 
 from core import abstract_models
-
-
-INGREDIENT_UNIT_MAX_LENGTH = 64
-
-MIN_COOKING_TIME = 1
-MIN_INGREDIENT_AMOUNT = 1
-TAG_MAX_LENGTH = 32
-INGREDIENT_MAX_LENGTH = 128
-RECIPE_MAX_LENGTH_NAME = 256
+from core.constants import (
+    COOKING_MIN_TIME,
+    INGREDIENT_MAX_LENGTH,
+    INGREDIENT_MIN_AMOUNT,
+    INGREDIENT_UNIT_MAX_LENGTH,
+    MAX_POSITIVE_VALUE,
+    RECIPE_MAX_LENGTH_NAME,
+    TAG_MAX_LENGTH,
+)
 
 
 class Tag(models.Model):
@@ -62,7 +62,16 @@ class Recipe(abstract_models.AuthorCreatedModel):
     text = models.TextField('Описание')
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления в минутах',
-        validators=[MinValueValidator(MIN_COOKING_TIME)],
+        validators=[
+            MinValueValidator(
+                COOKING_MIN_TIME,
+                f'Значение не должно быть меньше {COOKING_MIN_TIME}',
+            ),
+            MaxValueValidator(
+                MAX_POSITIVE_VALUE,
+                f'Значение не должно быть больше {MAX_POSITIVE_VALUE}',
+            ),
+        ],
     )
     tags = models.ManyToManyField(Tag, verbose_name='Теги')
     ingredients = models.ManyToManyField(
@@ -87,7 +96,17 @@ class RecipeIngredient(models.Model):
     )
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     amount = models.PositiveSmallIntegerField(
-        'Количество', validators=[MinValueValidator(MIN_INGREDIENT_AMOUNT)]
+        'Количество',
+        validators=[
+            MinValueValidator(
+                INGREDIENT_MIN_AMOUNT,
+                f'Значение не должно быть меньше {INGREDIENT_MIN_AMOUNT}',
+            ),
+            MaxValueValidator(
+                MAX_POSITIVE_VALUE,
+                f'Значение не должно быть больше {MAX_POSITIVE_VALUE}',
+            ),
+        ],
     )
 
     class Meta:

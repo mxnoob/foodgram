@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
+from core.constants import INGREDIENT_MIN_AMOUNT
 from .models import (
     FavoriteRecipe,
     Ingredient,
@@ -16,6 +17,7 @@ class RecipeIngredientInline(admin.TabularInline):
 
     model = RecipeIngredient
     extra = 1
+    min_num = INGREDIENT_MIN_AMOUNT
 
 
 @admin.register(Recipe)
