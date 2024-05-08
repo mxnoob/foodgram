@@ -1,18 +1,15 @@
 from django.contrib.auth import get_user_model
-from django.forms import BooleanField
-from django_filters import CharFilter, Filter, ModelMultipleChoiceFilter
-from django_filters.rest_framework import FilterSet
+from django_filters.rest_framework import (
+    BooleanFilter,
+    CharFilter,
+    FilterSet,
+    ModelMultipleChoiceFilter,
+)
 
 from recipes.models import Ingredient, Recipe, Tag
 
 
 User = get_user_model()
-
-
-class BooleanFilter(Filter):
-    """Переопределенный класс, только `True` или `False`"""
-
-    field_class = BooleanField
 
 
 class IngredientFilterSet(FilterSet):
