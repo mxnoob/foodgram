@@ -7,6 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 from recipes import models
 from recipes.purchase_product import generate_pdf_file
@@ -146,6 +147,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Получение короткой ссылки на рецепт"""
         self.get_object()
         original_url = request.META.get('HTTP_REFERER')
+        if original_url is None:
+            url = reverse('api:recipe-detail', kwargs={'pk': pk})
+            original_url = request.build_absolute_uri(url)
         serializer = self.get_serializer(
             data={'original_url': original_url},
             context={'request': request},
