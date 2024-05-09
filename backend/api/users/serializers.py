@@ -76,9 +76,10 @@ class UserRecipeSerializer(UserSerializer):
         recipes = obj.recipes.all()
         try:
             recipes_limit = int(request.query_params.get('recipes_limit'))
-            recipes = recipes[:recipes_limit]
         except (ValueError, TypeError):
             pass
+        else:
+            recipes = recipes[:recipes_limit]
 
         return ShortRecipeSerializer(recipes, many=True).data
 

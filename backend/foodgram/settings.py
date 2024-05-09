@@ -16,10 +16,9 @@ ALLOWED_HOSTS = (
     .split(',')
 )
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://foodgrm.hopto.org',
-    'http://foodgrm.hopto.org'
-]
+CSRF_TRUSTED_ORIGINS = (
+    os.getenv('CSRF_TRUSTED_ORIGINS').replace(' ', '').split(',')
+) or []
 
 
 INSTALLED_APPS = [

@@ -114,7 +114,7 @@ class UserViewSet(djoser_views.UserViewSet):
     @subscribe.mapping.delete
     def unsubscribe(self, request, id):
         subscriber_deleted, _ = Subscriber.objects.filter(
-            author_id=id, user=request.user
+            author=self.get_object(), user=request.user
         ).delete()
 
         if subscriber_deleted == 0:
