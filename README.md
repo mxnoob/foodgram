@@ -91,11 +91,97 @@ docker compose -f infra/docker-local.yml python manage.py add_ingredients
 | `author` | `integer` | Показывать рецепты только автора с указанным id.                                                        |
 | `tags` | `Array of strings` | xample: `tags=lunch&tags=breakfast`. Показывать рецепты только с указанными тегами (по slug)                                            |
 
+<details>
+<summary>Response</summary>
+
+```json
+{
+  "count": 123,
+  "next": "http://foodgram.example.org/api/recipes/?page=4",
+  "previous": "http://foodgram.example.org/api/recipes/?page=2",
+  "results": [
+    {
+      "id": 0,
+      "tags": [
+        {
+          "id": 0,
+          "name": "Завтрак",
+          "slug": "breakfast"
+        }
+      ],
+      "author": {
+        "email": "user@example.com",
+        "id": 0,
+        "username": "string",
+        "first_name": "Вася",
+        "last_name": "Иванов",
+        "is_subscribed": false,
+        "avatar": "http://foodgram.example.org/media/users/image.png"
+      },
+      "ingredients": [
+        {
+          "id": 0,
+          "name": "Картофель отварной",
+          "measurement_unit": "г",
+          "amount": 1
+        }
+      ],
+      "is_favorited": true,
+      "is_in_shopping_cart": true,
+      "name": "string",
+      "image": "http://foodgram.example.org/media/recipes/images/image.png",
+      "text": "string",
+      "cooking_time": 1
+    }
+  ]
+}
+```
+</details>
+
 #### Get item
 
 ```http
   GET /api/recipes/{id}/
 ```
+<details>
+<summary>Response</summary>
+
+```json
+{
+  "id": 0,
+  "tags": [
+    {
+      "id": 0,
+      "name": "Завтрак",
+      "slug": "breakfast"
+    }
+  ],
+  "author": {
+    "email": "user@example.com",
+    "id": 0,
+    "username": "string",
+    "first_name": "Вася",
+    "last_name": "Иванов",
+    "is_subscribed": false,
+    "avatar": "http://foodgram.example.org/media/users/image.png"
+  },
+  "ingredients": [
+    {
+      "id": 0,
+      "name": "Картофель отварной",
+      "measurement_unit": "г",
+      "amount": 1
+    }
+  ],
+  "is_favorited": true,
+  "is_in_shopping_cart": true,
+  "name": "string",
+  "image": "http://foodgram.example.org/media/recipes/images/image.png",
+  "text": "string",
+  "cooking_time": 1
+}
+```
+</details>
 
 | Parameter | Type     | Description                                            |
 | :-------- | :------- |:-------------------------------------------------------|

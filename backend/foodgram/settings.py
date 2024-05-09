@@ -15,10 +15,10 @@ ALLOWED_HOSTS = (
     .replace(' ', '')
     .split(',')
 )
-
-CSRF_TRUSTED_ORIGINS = (
-    os.getenv('CSRF_TRUSTED_ORIGINS').replace(' ', '').split(',')
-) or []
+if 'CSRF_TRUSTED_ORIGINS' in os.environ:
+    CSRF_TRUSTED_ORIGINS = (
+        os.getenv('CSRF_TRUSTED_ORIGINS').replace(' ', '').split(',')
+    )
 
 
 INSTALLED_APPS = [
