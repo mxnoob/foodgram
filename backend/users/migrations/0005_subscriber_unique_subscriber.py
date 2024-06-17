@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("users", "0004_alter_subscriber_options"),
+        ('users', '0004_alter_subscriber_options'),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name="subscriber",
+            model_name='subscriber',
             constraint=models.UniqueConstraint(
-                fields=("user", "author"), name="unique_subscriber"
+                fields=('user', 'author'), name='unique_subscriber'
             ),
         ),
     ]

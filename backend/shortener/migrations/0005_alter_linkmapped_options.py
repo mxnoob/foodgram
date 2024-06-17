@@ -5,12 +5,12 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("shortener", "0004_alter_linkmapped_url_hash"),
+        ('shortener', '0004_alter_linkmapped_url_hash'),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name="linkmapped",
-            options={"verbose_name": "Ссылка", "verbose_name_plural": "Ссылки"},
+            name='linkmapped',
+            options={'verbose_name': 'Ссылка', 'verbose_name_plural': 'Ссылки'},
         ),
     ]

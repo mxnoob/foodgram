@@ -7,43 +7,43 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("users", "0002_alter_user_avatar"),
+        ('users', '0002_alter_user_avatar'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Subscriber",
+            name='Subscriber',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
                 (
-                    "author",
+                    'author',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
-                        verbose_name="Автор",
+                        verbose_name='Автор',
                     ),
                 ),
                 (
-                    "user",
+                    'user',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="subscriber",
+                        related_name='subscriber',
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),
             ],
             options={
-                "verbose_name": "Подписка",
-                "verbose_name_plural": "Подписки",
-                "default_related_name": "followers",
+                'verbose_name': 'Подписка',
+                'verbose_name_plural': 'Подписки',
+                'default_related_name': 'followers',
             },
         ),
     ]

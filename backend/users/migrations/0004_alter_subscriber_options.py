@@ -5,16 +5,16 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("users", "0003_subscriber"),
+        ('users', '0003_subscriber'),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name="subscriber",
+            name='subscriber',
             options={
-                "default_related_name": "subscribers",
-                "verbose_name": "Подписка",
-                "verbose_name_plural": "Подписки",
+                'default_related_name': 'subscribers',
+                'verbose_name': 'Подписка',
+                'verbose_name_plural': 'Подписки',
             },
         ),
     ]

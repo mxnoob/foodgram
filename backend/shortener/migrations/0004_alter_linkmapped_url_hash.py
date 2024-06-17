@@ -6,13 +6,13 @@ import shortener.models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("shortener", "0003_alter_linkmapped_original_url_and_more"),
+        ('shortener', '0003_alter_linkmapped_original_url_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name="linkmapped",
-            name="url_hash",
+            model_name='linkmapped',
+            name='url_hash',
             field=models.CharField(
                 default=shortener.models.generate_hash, max_length=15
             ),
