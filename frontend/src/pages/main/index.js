@@ -79,4 +79,3 @@ const HomePage = ({ updateOrders }) => {
 }
 
 export default HomePage
-

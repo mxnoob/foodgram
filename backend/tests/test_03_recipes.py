@@ -178,9 +178,11 @@ class TestRecipes:
         response = current_client.get(self.URL_RECIPIES + '?is_favorited=1')
 
         favorite_recipe = recipe_manager.filter(
-            **{'favorites__author': current_user}
-            if current_user.is_authenticated
-            else {}
+            **(
+                {'favorites__author': current_user}
+                if current_user.is_authenticated
+                else {}
+            )
         ).count()
 
         assert (
@@ -191,9 +193,11 @@ class TestRecipes:
             self.URL_RECIPIES + '?is_in_shopping_cart=1'
         )
         shopping_cart_recipe = recipe_manager.filter(
-            **{'shopping_cart__author': current_user}
-            if current_user.is_authenticated
-            else {}
+            **(
+                {'shopping_cart__author': current_user}
+                if current_user.is_authenticated
+                else {}
+            )
         ).count()
 
         assert (

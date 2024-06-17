@@ -11,8 +11,8 @@ class User(AbstractUser):
     """Модель пользователя"""
 
     email = models.EmailField(unique=True)
-    first_name = models.CharField(_("first name"), max_length=150)
-    last_name = models.CharField(_("last name"), max_length=150)
+    first_name = models.CharField(_('first name'), max_length=150)
+    last_name = models.CharField(_('last name'), max_length=150)
     avatar = models.ImageField(
         'Аватар', upload_to='avatars/', blank=True, null=True
     )

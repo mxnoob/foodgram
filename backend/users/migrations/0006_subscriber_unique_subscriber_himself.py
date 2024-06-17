@@ -5,15 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("users", "0005_subscriber_unique_subscriber"),
+        ('users', '0005_subscriber_unique_subscriber'),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name="subscriber",
+            model_name='subscriber',
             constraint=models.CheckConstraint(
-                check=models.Q(("user", models.F("author")), _negated=True),
-                name="unique_subscriber_himself",
+                check=models.Q(('user', models.F('author')), _negated=True),
+                name='unique_subscriber_himself',
             ),
         ),
     ]

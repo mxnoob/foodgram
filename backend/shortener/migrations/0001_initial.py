@@ -10,19 +10,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="LinkMapped",
+            name='LinkMapped',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
-                ("url_hash", models.CharField(max_length=10)),
-                ("original_url", models.URLField()),
+                ('url_hash', models.CharField(max_length=10)),
+                ('original_url', models.URLField()),
             ],
         ),
     ]
